@@ -17,7 +17,7 @@ function setCardType(type){
     ccLogo.setAttribute("src",`cc-${type}.svg`)
 }
 
-setCardType("mastercard");
+setCardType("default");
 
 globalThis.setCardType = setCardType;
 
@@ -74,3 +74,45 @@ const cardNumberPattern = {
     }
 }
 const cardNumberMasked = IMask(cardNumber,cardNumberPattern)
+
+
+const addButton = document.querySelector('#btn');
+addButton.addEventListener('click',()=>{
+    alert("Cadastrado")
+});
+
+document.querySelector('form').addEventListener('submit',(event)=>{
+    event.preventDefault()
+})
+
+const cardHolder = document.querySelector("#card-holder");
+cardHolder.addEventListener("input",()=>{
+    const ccHolder = document.querySelector(".cc-holder .value");
+
+    ccHolder.innerHTML = cardHolder.value.length === 0 ? "FULANO DA SILVA" : cardHolder.value
+});
+
+securityCodeMasked.on("accept",()=>{
+    updateSecurityCode(securityCodeMasked.value);
+});
+function updateSecurityCode(code){
+    const ccSecurity = document.querySelector(".cc-security .value");
+    ccSecurity.innerHTML = code.length === 0 ? "123" : code
+}
+
+cardNumberMasked.on("accept",()=>{
+    setCardType(cardNumberMasked.masked.currentMask.cardType)
+    updateCardNumber(cardNumberMasked.value);
+
+});
+function updateCardNumber(number){
+    const cardNumber = document.querySelector(".cc-number");
+    cardNumber.innerHTML = number.length === 0 ? "1234 5678 9012 3456" : number
+}
+expirationDateMasked.on("accept",()=>{
+    updateExpirationDate(expirationDateMasked.value)
+});
+function updateExpirationDate(expiration){
+    const expirationNumber = document.querySelector(".cc-extra .value")
+    expirationNumber.innerHTML = expiration.length === 0 ? "02/32" : expiration
+}
